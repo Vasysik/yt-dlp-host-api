@@ -1,0 +1,4 @@
+/venv
+/test.py
+/src/yt_dlp_host_api/__pycache__
+/src/yt_dlp_host_api.egg-info
