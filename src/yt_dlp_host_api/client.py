@@ -21,7 +21,7 @@ class Client:
     
     def check_permissions(self, permissions):
         data = {"permissions": permissions}
-        response = requests.post(f"{self.client.host_url}/check_permissions", json=data, headers=self.client.headers)
+        response = requests.post(f"{self.host_url}/check_permissions", json=data, headers=self.headers)
         if response.status_code != 200:
             return False
         return True
