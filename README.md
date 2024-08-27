@@ -34,7 +34,7 @@ info_json = client.get_info(url='https://youtu.be/1FPdtR_5KFo').get_json(['quali
 print("Video info:", info_json)
 
 # Admin operations (requires admin API key)
-new_key = client.admin.create_key("user_key", ["get_video", "get_info"])
+new_key = client.admin.create_key("user_key", ["get_video", "get_audio", "get_info"])
 keys = client.admin.list_keys()
 client.admin.delete_key("user_key")
 ```
@@ -43,6 +43,7 @@ client.admin.delete_key("user_key")
 
 - Download YouTube videos
 - Retrieve video information
+- Checking client permissions
 - Admin operations:
   - Create new API keys
   - List existing API keys
@@ -58,6 +59,7 @@ client.admin.delete_key("user_key")
 - `client.send_task.get_video(url, quality='best')`: Initiates a get_video task
 - `client.send_task.get_audio(url, quality='best')`: Initiates a get_audio task
 - `client.send_task.get_info(url)`: Initiates a get_info task
+- `client.check_permissions(permissions)`: Checks for all permissions in the list
 
 ### Task
 

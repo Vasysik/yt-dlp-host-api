@@ -18,7 +18,14 @@ class Client:
     
     def get_info(self, url):
         return self.send_task.get_info(url=url).get_result()
-
+    
+    def check_permissions(self, permissions):
+        data = {"permissions": permissions}
+        response = requests.post(f"{self.client.host_url}/check_permissions", json=data, headers=self.client.headers)
+        if response.status_code != 200:
+            return False
+        return True
+        
     class SendTask:
         def __init__(self, client):
             self.client = client
