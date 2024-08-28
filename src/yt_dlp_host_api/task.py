@@ -34,11 +34,12 @@ class TaskResult:
         self.client = client
         self.status = status
 
-    def get_file(self):
+    def get_file(self, raw_response=False):
         url = self.get_file_url()
         response = requests.get(url, headers=self.client.headers)
         if response.status_code != 200:
             raise APIError(response.json().get('error', 'Unknown error'))
+        if raw_response: return response
         return response.content
 
     def get_file_url(self):

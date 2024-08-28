@@ -25,12 +25,13 @@ class Client:
             return False
         return True
     
-    def create_key(self, name, permissions):
+    def create_key(self, name, permissions, response_json=False):
         data = {"name": name, "permissions": permissions}
         response = requests.post(f"{self.host_url}/create_key", json=data, headers=self.headers)
         if response.status_code != 201:
             raise APIError(response.json().get('error', 'Unknown error'))
-        return response.json()
+        if response_json: return response.json()
+        return response.json()['key']
 
     def delete_key(self, name):
         response = requests.delete(f"{self.host_url}/delete_key/{name}", headers=self.headers)
@@ -38,11 +39,12 @@ class Client:
             raise APIError(response.json().get('error', 'Unknown error'))
         return response.json()
     
-    def get_key(self, name):
+    def get_key(self, name, response_json=False):
         response = requests.delete(f"{self.host_url}/get_key/{name}", headers=self.headers)
         if response.status_code != 200:
             raise APIError(response.json().get('error', 'Unknown error'))
-        return response.json()
+        if response_json: return response.json()
+        return response.json()['key']
 
     def list_keys(self):
         response = requests.get(f"{self.host_url}/list_keys", headers=self.headers)
