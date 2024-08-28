@@ -46,8 +46,8 @@ class Client:
         if response_json: return response.json()
         return response.json()['key']
 
-    def list_keys(self):
-        response = requests.get(f"{self.host_url}/list_keys", headers=self.headers)
+    def keys_list(self):
+        response = requests.get(f"{self.host_url}/keys_list", headers=self.headers)
         if response.status_code != 200:
             raise APIError(response.json().get('error', 'Unknown error'))
         return response.json()

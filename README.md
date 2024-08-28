@@ -35,7 +35,7 @@ print("Video info:", info_json)
 
 # Admin operations (requires admin API key)
 new_key = client.create_key("user_key", ["get_video", "get_audio", "get_info"])
-keys = client.list_keys()
+keys = client.keys_list()
 key = client.get_key("user_key")
 client.delete_key("user_key")
 ```
@@ -78,7 +78,7 @@ client.delete_key("user_key")
 ### Admin
 
 - `client.create_key(name, permissions)`: Create a new API key
-- `client.list_keys()`: List all existing API keys
+- `client.keys_list()`: List all existing API keys
 - `client.get_key(name)`: Get API key by key name
 - `client.delete_key(name)`: Delete an API key
 
