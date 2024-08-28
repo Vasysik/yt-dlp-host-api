@@ -8,7 +8,6 @@ class Client:
         self.api_key = api_key
         self.headers = {"X-API-Key": api_key, "Content-Type": "application/json"}
         self.send_task = self.SendTask(self)
-        self.admin = self.Admin(self)
 
     def get_video(self, url, quality="best"):
         return self.send_task.get_video(url=url, quality=quality).get_result()
