@@ -34,9 +34,10 @@ info_json = client.get_info(url='https://youtu.be/1FPdtR_5KFo').get_json(['quali
 print("Video info:", info_json)
 
 # Admin operations (requires admin API key)
-new_key = client.admin.create_key("user_key", ["get_video", "get_audio", "get_info"])
-keys = client.admin.list_keys()
-client.admin.delete_key("user_key")
+new_key = client.create_key("user_key", ["get_video", "get_audio", "get_info"])
+keys = client.list_keys()
+key = client.get_key("user_key")
+client.delete_key("user_key")
 ```
 
 ## Features
@@ -47,6 +48,7 @@ client.admin.delete_key("user_key")
 - Admin operations:
   - Create new API keys
   - List existing API keys
+  - Get API key by key name
   - Delete API keys
 
 ## API Reference
@@ -75,9 +77,10 @@ client.admin.delete_key("user_key")
 
 ### Admin
 
-- `client.admin.create_key(name, permissions)`: Create a new API key
-- `client.admin.list_keys()`: List all existing API keys
-- `client.admin.delete_key(name)`: Delete an API key
+- `client.create_key(name, permissions)`: Create a new API key
+- `client.list_keys()`: List all existing API keys
+- `client.get_key(name)`: Get API key by key name
+- `client.delete_key(name)`: Delete an API key
 
 ## Error Handling
 

@@ -1,6 +1,6 @@
 [project]
 name = "yt_dlp_host_api"
-version = "0.0.3"
+version = "0.0.4"
 authors = [
   { name="Amadeus (Wasys)", email="tubik.corp@gmail.com" },
 ]

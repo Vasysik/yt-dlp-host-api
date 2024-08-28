@@ -25,6 +25,31 @@ class Client:
         if response.status_code != 200:
             return False
         return True
+    
+    def create_key(self, name, permissions):
+        data = {"name": name, "permissions": permissions}
+        response = requests.post(f"{self.host_url}/create_key", json=data, headers=self.headers)
+        if response.status_code != 201:
+            raise APIError(response.json().get('error', 'Unknown error'))
+        return response.json()
+
+    def delete_key(self, name):
+        response = requests.delete(f"{self.host_url}/delete_key/{name}", headers=self.headers)
+        if response.status_code != 200:
+            raise APIError(response.json().get('error', 'Unknown error'))
+        return response.json()
+    
+    def get_key(self, name):
+        response = requests.delete(f"{self.host_url}/get_key/{name}", headers=self.headers)
+        if response.status_code != 200:
+            raise APIError(response.json().get('error', 'Unknown error'))
+        return response.json()
+
+    def list_keys(self):
+        response = requests.get(f"{self.host_url}/list_keys", headers=self.headers)
+        if response.status_code != 200:
+            raise APIError(response.json().get('error', 'Unknown error'))
+        return response.json()
         
     class SendTask:
         def __init__(self, client):
@@ -50,26 +75,3 @@ class Client:
             if response.status_code != 200:
                 raise APIError(response.json().get('error', 'Unknown error'))
             return Task(self.client, response.json()['task_id'], 'get_info')
-        
-    class Admin:
-        def __init__(self, client):
-            self.client = client
-
-        def create_key(self, name, permissions):
-            data = {"name": name, "permissions": permissions}
-            response = requests.post(f"{self.client.host_url}/create_key", json=data, headers=self.client.headers)
-            if response.status_code != 201:
-                raise APIError(response.json().get('error', 'Unknown error'))
-            return response.json()
-
-        def delete_key(self, name):
-            response = requests.delete(f"{self.client.host_url}/delete_key/{name}", headers=self.client.headers)
-            if response.status_code != 200:
-                raise APIError(response.json().get('error', 'Unknown error'))
-            return response.json()
-
-        def list_keys(self):
-            response = requests.get(f"{self.client.host_url}/list_keys", headers=self.client.headers)
-            if response.status_code != 200:
-                raise APIError(response.json().get('error', 'Unknown error'))
-            return response.json()
