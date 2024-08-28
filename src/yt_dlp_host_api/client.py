@@ -40,14 +40,14 @@ class Client:
         return response.json()
     
     def get_key(self, name, response_json=False):
-        response = requests.delete(f"{self.host_url}/get_key/{name}", headers=self.headers)
+        response = requests.get(f"{self.host_url}/get_key/{name}", headers=self.headers)
         if response.status_code != 200:
             raise APIError(response.json().get('error', 'Unknown error'))
         if response_json: return response.json()
         return response.json()['key']
 
-    def keys_list(self):
-        response = requests.get(f"{self.host_url}/keys_list", headers=self.headers)
+    def get_keys(self):
+        response = requests.get(f"{self.host_url}/get_keys", headers=self.headers)
         if response.status_code != 200:
             raise APIError(response.json().get('error', 'Unknown error'))
         return response.json()
