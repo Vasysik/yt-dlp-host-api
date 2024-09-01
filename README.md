@@ -1,6 +1,6 @@
-# yt-dlp-host API Client
+# [yt-dlp-host](https://github.com/Vasysik/yt-dlp-host) API Client
 
-This is a Python library for interacting with the yt-dlp-host API.
+This is a Python library for interacting with the [yt-dlp-host](https://github.com/Vasysik/yt-dlp-host) API.
 
 ## Installation
 
