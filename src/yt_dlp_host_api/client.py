@@ -15,6 +15,12 @@ class Client:
     def get_audio(self, url):
         return self.send_task.get_audio(url=url).get_result()
     
+    def get_live_video(self, url, duration, start=0, quality="best"):
+        return self.send_task.get_live_video(url=url, start=start, duration=duration, quality=quality).get_result()
+    
+    def get_live_audio(self, url, duration, start=0):
+        return self.send_task.get_live_audio(url=url, start=start, duration=duration).get_result()
+    
     def get_info(self, url):
         return self.send_task.get_info(url=url).get_result()
     
@@ -66,6 +72,20 @@ class Client:
         def get_audio(self, url):
             data = {"url": url}
             response = requests.post(f"{self.client.host_url}/get_audio", json=data, headers=self.client.headers)
+            if response.status_code != 200:
+                raise APIError(response.json().get('error', 'Unknown error'))
+            return Task(self.client, response.json()['task_id'], 'get_audio')
+        
+        def get_live_video(self, url, duration, start=0, quality="best"):
+            data = {"url": url, "start": start, "duration": duration, "quality": quality}
+            response = requests.post(f"{self.client.host_url}/get_live_video", json=data, headers=self.client.headers)
+            if response.status_code != 200:
+                raise APIError(response.json().get('error', 'Unknown error'))
+            return Task(self.client, response.json()['task_id'], 'get_video')
+        
+        def get_live_audio(self, url, duration, start=0):
+            data = {"url": url, "start": start, "duration": duration}
+            response = requests.post(f"{self.client.host_url}/get_live_audio", json=data, headers=self.client.headers)
             if response.status_code != 200:
                 raise APIError(response.json().get('error', 'Unknown error'))
             return Task(self.client, response.json()['task_id'], 'get_audio')
