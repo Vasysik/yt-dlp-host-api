@@ -9,17 +9,17 @@ class Client:
         self.headers = {"X-API-Key": api_key, "Content-Type": "application/json"}
         self.send_task = self.SendTask(self)
 
-    def get_video(self, url, video_quality="best", audio_quality="best"):
-        return self.send_task.get_video(url=url, video_quality=video_quality, audio_quality=audio_quality).get_result()
+    def get_video(self, url, video_format="bestvideo", audio_format="bestaudio"):
+        return self.send_task.get_video(url=url, video_format=video_format, audio_format=audio_format).get_result()
     
-    def get_audio(self, url, audio_quality="best"):
-        return self.send_task.get_audio(url=url, audio_quality=audio_quality).get_result()
+    def get_audio(self, url, audio_format="bestaudio"):
+        return self.send_task.get_audio(url=url, audio_format=audio_format).get_result()
     
-    def get_live_video(self, url, duration, start=0, video_quality="best", audio_quality="best"):
-        return self.send_task.get_live_video(url=url, start=start, duration=duration, video_quality=video_quality, audio_quality=audio_quality).get_result()
+    def get_live_video(self, url, duration, start=0, video_format="bestvideo", audio_format="bestaudio"):
+        return self.send_task.get_live_video(url=url, start=start, duration=duration, video_format=video_format, audio_format=audio_format).get_result()
     
-    def get_live_audio(self, url, duration, start=0, audio_quality="best"):
-        return self.send_task.get_live_audio(url=url, start=start, duration=duration, audio_quality=audio_quality).get_result()
+    def get_live_audio(self, url, duration, start=0, audio_format="bestaudio"):
+        return self.send_task.get_live_audio(url=url, start=start, duration=duration, audio_format=audio_format).get_result()
     
     def get_info(self, url):
         return self.send_task.get_info(url=url).get_result()
@@ -62,29 +62,29 @@ class Client:
         def __init__(self, client):
             self.client = client
 
-        def get_video(self, url, video_quality="best", audio_quality="best"):
-            data = {"url": url, "video_quality": video_quality, "audio_quality": audio_quality}
+        def get_video(self, url, video_format="bestvideo", audio_format="bestaudio"):
+            data = {"url": url, "video_format": video_format, "audio_format": audio_format}
             response = requests.post(f"{self.client.host_url}/get_video", json=data, headers=self.client.headers)
             if response.status_code != 200:
                 raise APIError(response.json().get('error', 'Unknown error'))
             return Task(self.client, response.json()['task_id'], 'get_video')
         
-        def get_audio(self, url, audio_quality="best"):
-            data = {"url": url, "audio_quality": audio_quality}
+        def get_audio(self, url, audio_format="bestaudio"):
+            data = {"url": url, "audio_format": audio_format}
             response = requests.post(f"{self.client.host_url}/get_audio", json=data, headers=self.client.headers)
             if response.status_code != 200:
                 raise APIError(response.json().get('error', 'Unknown error'))
             return Task(self.client, response.json()['task_id'], 'get_audio')
         
-        def get_live_video(self, url, duration, start=0, video_quality="best", audio_quality="best"):
-            data = {"url": url, "start": start, "duration": duration, "video_quality": video_quality, "audio_quality": audio_quality}
+        def get_live_video(self, url, duration, start=0, video_format="bestvideo", audio_format="bestaudio"):
+            data = {"url": url, "start": start, "duration": duration, "video_format": video_format, "audio_format": audio_format}
             response = requests.post(f"{self.client.host_url}/get_live_video", json=data, headers=self.client.headers)
             if response.status_code != 200:
                 raise APIError(response.json().get('error', 'Unknown error'))
             return Task(self.client, response.json()['task_id'], 'get_video')
         
-        def get_live_audio(self, url, duration, start=0, audio_quality="best"):
-            data = {"url": url, "start": start, "duration": duration, "audio_quality": audio_quality}
+        def get_live_audio(self, url, duration, start=0, audio_format="bestaudio"):
+            data = {"url": url, "start": start, "duration": duration, "audio_format": audio_format}
             response = requests.post(f"{self.client.host_url}/get_live_audio", json=data, headers=self.client.headers)
             if response.status_code != 200:
                 raise APIError(response.json().get('error', 'Unknown error'))
