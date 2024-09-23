@@ -55,15 +55,15 @@ client.delete_key("user_key")
 
 ### Client
 
-- `client.get_video(url, quality='best')`: Simple way to get the result of get_video
-- `client.get_audio(url)`: Simple way to get the result of get_audio
-- `client.get_live_video(url, duration, start=0, quality='best')`: Simple way to get the result of get_live_video
-- `client.get_live_audio(url, duration, start=0)`: Simple way to get the result of get_live_audio
+- `client.get_video(url, video_format="bestvideo", audio_format="bestaudio")`: Simple way to get the result of get_video
+- `client.get_audio(url, audio_format="bestaudio")`: Simple way to get the result of get_audio
+- `client.get_live_video(url, duration, start=0, video_format="bestvideo", audio_format="bestaudio")`: Simple way to get the result of get_live_video
+- `client.get_live_audio(url, duration, start=0, audio_format="bestaudio")`: Simple way to get the result of get_live_audio
 - `client.get_info(url)`: Simple way to get the result of get_info
-- `client.send_task.get_video(url, quality='best')`: Initiates a get_video task
-- `client.send_task.get_audio(url)`: Initiates a get_audio task
-- `client.send_task.get_live_video(url, duration, start=0, quality='best')`: Initiates a get_video task
-- `client.send_task.get_live_audio(url, duration, start=0)`: Initiates a get_audio task
+- `client.send_task.get_video(url, video_format="bestvideo", audio_format="bestaudio")`: Initiates a get_video task
+- `client.send_task.get_audio(url, audio_format="bestaudio")`: Initiates a get_audio task
+- `client.send_task.get_live_video(url, duration, start=0, video_format="bestvideo", audio_format="bestaudio")`: Initiates a get_video task
+- `client.send_task.get_live_audio(url, duration, start=0, audio_format="bestaudio")`: Initiates a get_audio task
 - `client.send_task.get_info(url)`: Initiates a get_info task
 - `client.check_permissions(permissions)`: Checks for all permissions in the list
 
