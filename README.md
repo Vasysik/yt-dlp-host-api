@@ -21,11 +21,26 @@ import yt_dlp_host_api
 api = yt_dlp_host_api.api('http://your-api-url.com')
 client = api.get_client('YOUR_API_KEY')
 
-# Download a video
+# Download a complete video
 client.get_video(url='https://youtu.be/1FPdtR_5KFo').save_file("test_video.mp4")
 print("Video saved to test_video.mp4")
 
-# Download a audio
+# Download a video segment (first 5 minutes)
+client.get_video(
+    url='https://youtu.be/1FPdtR_5KFo',
+    end_time="00:05:00"
+).save_file("first_5min.mp4")
+print("First 5 minutes saved to first_5min.mp4")
+
+# Download a video segment (from 5 minutes to 10 minutes)
+client.get_video(
+    url='https://youtu.be/1FPdtR_5KFo',
+    start_time="00:05:00",
+    end_time="00:10:00"
+).save_file("5min_to_10min.mp4")
+print("5-10 minute segment saved to 5min_to_10min.mp4")
+
+# Download a complete audio
 client.get_audio(url='https://youtu.be/1FPdtR_5KFo').save_file("test_audio.mp3")
 print("Audio saved to test_audio.mp3")
 
@@ -43,6 +58,14 @@ client.delete_key("user_key")
 ## Features
 
 - Download YouTube videos
+  - Download complete videos
+  - Download specific time segments
+  - Choose video and audio quality
+- Download YouTube audio
+  - Download complete audio
+  - Download specific time segments
+  - Choose audio quality
+- Extract live stream segments
 - Retrieve video information
 - Checking client permissions
 - Admin operations:
@@ -55,17 +78,25 @@ client.delete_key("user_key")
 
 ### Client
 
-- `client.get_video(url, video_format="bestvideo", audio_format="bestaudio")`: Simple way to get the result of get_video
-- `client.get_audio(url, audio_format="bestaudio")`: Simple way to get the result of get_audio
-- `client.get_live_video(url, duration, start=0, video_format="bestvideo", audio_format="bestaudio")`: Simple way to get the result of get_live_video
-- `client.get_live_audio(url, duration, start=0, audio_format="bestaudio")`: Simple way to get the result of get_live_audio
-- `client.get_info(url)`: Simple way to get the result of get_info
-- `client.send_task.get_video(url, video_format="bestvideo", audio_format="bestaudio")`: Initiates a get_video task
-- `client.send_task.get_audio(url, audio_format="bestaudio")`: Initiates a get_audio task
-- `client.send_task.get_live_video(url, duration, start=0, video_format="bestvideo", audio_format="bestaudio")`: Initiates a get_video task
-- `client.send_task.get_live_audio(url, duration, start=0, audio_format="bestaudio")`: Initiates a get_audio task
-- `client.send_task.get_info(url)`: Initiates a get_info task
-- `client.check_permissions(permissions)`: Checks for all permissions in the list
+- `client.get_video(url, video_format="bestvideo", audio_format="bestaudio", start_time=None, end_time=None)`: Get video with optional time segment selection
+- `client.get_audio(url, audio_format="bestaudio", start_time=None, end_time=None)`: Get audio with optional time segment selection
+- `client.get_live_video(url, duration, start=0, video_format="bestvideo", audio_format="bestaudio")`: Get live video segment
+- `client.get_live_audio(url, duration, start=0, audio_format="bestaudio")`: Get live audio segment
+- `client.get_info(url)`: Get video information
+- `client.send_task.get_video(url, video_format="bestvideo", audio_format="bestaudio", start_time=None, end_time=None)`: Initiate a video download task
+- `client.send_task.get_audio(url, audio_format="bestaudio", start_time=None, end_time=None)`: Initiate an audio download task
+- `client.send_task.get_live_video(url, duration, start=0, video_format="bestvideo", audio_format="bestaudio")`: Initiate a live video download task
+- `client.send_task.get_live_audio(url, duration, start=0, audio_format="bestaudio")`: Initiate a live audio download task
+- `client.send_task.get_info(url)`: Initiate an info retrieval task
+- `client.check_permissions(permissions)`: Check for all permissions in the list
+
+### Time Format
+
+Time parameters (`start_time` and `end_time`) should be provided in the following format:
+- "HH:MM:SS" (hours:minutes:seconds)
+Examples:
+- "00:05:00" - 5 minutes
+- "01:30:45" - 1 hour, 30 minutes, and 45 seconds
 
 ### Task
 

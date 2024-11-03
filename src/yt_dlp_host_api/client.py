@@ -9,17 +9,39 @@ class Client:
         self.headers = {"X-API-Key": api_key, "Content-Type": "application/json"}
         self.send_task = self.SendTask(self)
 
-    def get_video(self, url, video_format="bestvideo", audio_format="bestaudio"):
-        return self.send_task.get_video(url=url, video_format=video_format, audio_format=audio_format).get_result()
+    def get_video(self, url, video_format="bestvideo", audio_format="bestaudio", start_time=None, end_time=None):
+        return self.send_task.get_video(
+            url=url, 
+            video_format=video_format, 
+            audio_format=audio_format,
+            start_time=start_time,
+            end_time=end_time
+        ).get_result()
     
-    def get_audio(self, url, audio_format="bestaudio"):
-        return self.send_task.get_audio(url=url, audio_format=audio_format).get_result()
+    def get_audio(self, url, audio_format="bestaudio", start_time=None, end_time=None):
+        return self.send_task.get_audio(
+            url=url, 
+            audio_format=audio_format,
+            start_time=start_time,
+            end_time=end_time
+        ).get_result()
     
     def get_live_video(self, url, duration, start=0, video_format="bestvideo", audio_format="bestaudio"):
-        return self.send_task.get_live_video(url=url, start=start, duration=duration, video_format=video_format, audio_format=audio_format).get_result()
+        return self.send_task.get_live_video(
+            url=url, 
+            start=start, 
+            duration=duration, 
+            video_format=video_format, 
+            audio_format=audio_format
+        ).get_result()
     
     def get_live_audio(self, url, duration, start=0, audio_format="bestaudio"):
-        return self.send_task.get_live_audio(url=url, start=start, duration=duration, audio_format=audio_format).get_result()
+        return self.send_task.get_live_audio(
+            url=url, 
+            start=start, 
+            duration=duration, 
+            audio_format=audio_format
+        ).get_result()
     
     def get_info(self, url):
         return self.send_task.get_info(url=url).get_result()
@@ -62,15 +84,21 @@ class Client:
         def __init__(self, client):
             self.client = client
 
-        def get_video(self, url, video_format="bestvideo", audio_format="bestaudio"):
+        def get_video(self, url, video_format="bestvideo", audio_format="bestaudio", start_time=None, end_time=None):
             data = {"url": url, "video_format": video_format, "audio_format": audio_format}
+            if start_time is not None: data["start_time"] = start_time
+            if end_time is not None: data["end_time"] = end_time
+                
             response = requests.post(f"{self.client.host_url}/get_video", json=data, headers=self.client.headers)
             if response.status_code != 200:
                 raise APIError(response.json().get('error', 'Unknown error'))
             return Task(self.client, response.json()['task_id'], 'get_video')
         
-        def get_audio(self, url, audio_format="bestaudio"):
+        def get_audio(self, url, audio_format="bestaudio", start_time=None, end_time=None):
             data = {"url": url, "audio_format": audio_format}
+            if start_time is not None: data["start_time"] = start_time
+            if end_time is not None: data["end_time"] = end_time
+                
             response = requests.post(f"{self.client.host_url}/get_audio", json=data, headers=self.client.headers)
             if response.status_code != 200:
                 raise APIError(response.json().get('error', 'Unknown error'))
