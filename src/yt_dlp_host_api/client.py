@@ -9,21 +9,23 @@ class Client:
         self.headers = {"X-API-Key": api_key, "Content-Type": "application/json"}
         self.send_task = self.SendTask(self)
 
-    def get_video(self, url, video_format="bestvideo", audio_format="bestaudio", start_time=None, end_time=None):
+    def get_video(self, url, video_format="bestvideo", audio_format="bestaudio", start_time=None, end_time=None, force_keyframes=False):
         return self.send_task.get_video(
             url=url, 
             video_format=video_format, 
             audio_format=audio_format,
             start_time=start_time,
-            end_time=end_time
+            end_time=end_time,
+            force_keyframes=force_keyframes
         ).get_result()
     
-    def get_audio(self, url, audio_format="bestaudio", start_time=None, end_time=None):
+    def get_audio(self, url, audio_format="bestaudio", start_time=None, end_time=None, force_keyframes=False):
         return self.send_task.get_audio(
             url=url, 
             audio_format=audio_format,
             start_time=start_time,
-            end_time=end_time
+            end_time=end_time,
+            force_keyframes=force_keyframes
         ).get_result()
     
     def get_live_video(self, url, duration, start=0, video_format="bestvideo", audio_format="bestaudio"):
@@ -84,8 +86,8 @@ class Client:
         def __init__(self, client):
             self.client = client
 
-        def get_video(self, url, video_format="bestvideo", audio_format="bestaudio", start_time=None, end_time=None):
-            data = {"url": url, "video_format": video_format, "audio_format": audio_format}
+        def get_video(self, url, video_format="bestvideo", audio_format="bestaudio", start_time=None, end_time=None, force_keyframes=False):
+            data = {"url": url, "video_format": video_format, "audio_format": audio_format, "force_keyframes": force_keyframes}
             if start_time is not None: data["start_time"] = start_time
             if end_time is not None: data["end_time"] = end_time
                 
@@ -94,8 +96,8 @@ class Client:
                 raise APIError(response.json().get('error', 'Unknown error'))
             return Task(self.client, response.json()['task_id'], 'get_video')
         
-        def get_audio(self, url, audio_format="bestaudio", start_time=None, end_time=None):
-            data = {"url": url, "audio_format": audio_format}
+        def get_audio(self, url, audio_format="bestaudio", start_time=None, end_time=None, force_keyframes=False):
+            data = {"url": url, "audio_format": audio_format, "force_keyframes": force_keyframes}
             if start_time is not None: data["start_time"] = start_time
             if end_time is not None: data["end_time"] = end_time
                 
