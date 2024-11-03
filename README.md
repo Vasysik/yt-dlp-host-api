@@ -25,20 +25,23 @@ client = api.get_client('YOUR_API_KEY')
 client.get_video(url='https://youtu.be/1FPdtR_5KFo').save_file("test_video.mp4")
 print("Video saved to test_video.mp4")
 
-# Download a video segment (first 5 minutes)
-client.get_video(
-    url='https://youtu.be/1FPdtR_5KFo',
-    end_time="00:05:00"
-).save_file("first_5min.mp4")
-print("First 5 minutes saved to first_5min.mp4")
-
-# Download a video segment (from 5 minutes to 10 minutes)
+# Download a video segment with precise cutting
 client.get_video(
     url='https://youtu.be/1FPdtR_5KFo',
     start_time="00:05:00",
-    end_time="00:10:00"
-).save_file("5min_to_10min.mp4")
-print("5-10 minute segment saved to 5min_to_10min.mp4")
+    end_time="00:10:00",
+    force_keyframes=True
+).save_file("precise_cut.mp4")
+print("Precisely cut segment saved to precise_cut.mp4")
+
+# Download a video segment with faster cutting at keyframes
+client.get_video(
+    url='https://youtu.be/1FPdtR_5KFo',
+    start_time="00:05:00",
+    end_time="00:10:00",
+    force_keyframes=False
+).save_file("keyframe_cut.mp4")
+print("Keyframe-cut segment saved to keyframe_cut.mp4")
 
 # Download a complete audio
 client.get_audio(url='https://youtu.be/1FPdtR_5KFo').save_file("test_audio.mp3")
@@ -60,6 +63,8 @@ client.delete_key("user_key")
 - Download YouTube videos
   - Download complete videos
   - Download specific time segments
+    - Precise cutting with frame re-encoding
+    - Fast cutting at keyframes
   - Choose video and audio quality
 - Download YouTube audio
   - Download complete audio
@@ -78,13 +83,13 @@ client.delete_key("user_key")
 
 ### Client
 
-- `client.get_video(url, video_format="bestvideo", audio_format="bestaudio", start_time=None, end_time=None)`: Get video with optional time segment selection
-- `client.get_audio(url, audio_format="bestaudio", start_time=None, end_time=None)`: Get audio with optional time segment selection
+- `client.get_video(url, video_format="bestvideo", audio_format="bestaudio", start_time=None, end_time=None, force_keyframes=False)`: Get video with optional time segment selection
+- `client.get_audio(url, audio_format="bestaudio", start_time=None, end_time=None, force_keyframes=False)`: Get audio with optional time segment selection
 - `client.get_live_video(url, duration, start=0, video_format="bestvideo", audio_format="bestaudio")`: Get live video segment
 - `client.get_live_audio(url, duration, start=0, audio_format="bestaudio")`: Get live audio segment
 - `client.get_info(url)`: Get video information
-- `client.send_task.get_video(url, video_format="bestvideo", audio_format="bestaudio", start_time=None, end_time=None)`: Initiate a video download task
-- `client.send_task.get_audio(url, audio_format="bestaudio", start_time=None, end_time=None)`: Initiate an audio download task
+- `client.send_task.get_video(url, video_format="bestvideo", audio_format="bestaudio", start_time=None, end_time=None, force_keyframes=False)`: Initiate a video download task
+- `client.send_task.get_audio(url, audio_format="bestaudio", start_time=None, end_time=None, force_keyframes=False)`: Initiate an audio download task
 - `client.send_task.get_live_video(url, duration, start=0, video_format="bestvideo", audio_format="bestaudio")`: Initiate a live video download task
 - `client.send_task.get_live_audio(url, duration, start=0, audio_format="bestaudio")`: Initiate a live audio download task
 - `client.send_task.get_info(url)`: Initiate an info retrieval task
@@ -97,6 +102,12 @@ Time parameters (`start_time` and `end_time`) should be provided in the followin
 Examples:
 - "00:05:00" - 5 minutes
 - "01:30:45" - 1 hour, 30 minutes, and 45 seconds
+
+### Cutting Modes
+
+The `force_keyframes` parameter determines how video/audio segments are cut:
+- `force_keyframes=False` (default): Faster cutting that aligns to nearest keyframes. May not be exactly at specified timestamps but is much faster as it avoids re-encoding.
+- `force_keyframes=True`: Precise cutting at exact timestamps. This requires re-encoding which takes longer but provides exact cuts.
 
 ### Task
 
